@@ -1,3 +1,8 @@
-require 'build'
+require File.join(File.dirname(__FILE__), 'build.rb')
 
-watch(/.*/) { build_config }
+guard(:shell) do
+  watch(/.*/) do
+    build_config
+    `/etc/init.d/apache2 reload`
+  end
+end

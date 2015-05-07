@@ -1,9 +1,9 @@
-Alias "/<%= @site[:id] %>" "<%= @site[:dir] %>"
-<Directory "<%= @site[:dir] %>">
+Alias "/<%= id %>" "<%= dir_path %>"
+<Directory "<%= dir_path %>">
     AllowOverride All
     Options None
     Order allow,deny
     Allow from all
     SetHandler 1c-application
-    ManagedApplicationDescriptor "<%= @site[:vrd] %>"
+    ManagedApplicationDescriptor "<%= vrd_file %>"
 </Directory>
