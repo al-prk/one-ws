@@ -1,4 +1,5 @@
-require File.join(File.dirname(__FILE__), 'build.rb')
+$LOAD_PATH.unshift File.dirname(__FILE__)
+require 'build'
 
 guard(:shell) do
   watch(/.*/) do
