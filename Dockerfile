@@ -14,22 +14,18 @@ VOLUME $descriptors
 # Установка пакетов 1С
 
 COPY packages/*.deb packages/
-RUN sh -c 'dpkg -i ./packages/1c-enterprise*-common_*_amd64.deb'
-RUN sh -c 'dpkg -i ./packages/1c-enterprise*-server_*_amd64.deb'
-RUN sh -c 'dpkg -i ./packages/1c-enterprise*-ws_*_amd64.deb'
+RUN sh -c 'dpkg -i ./packages/1c-enterprise*_amd64.deb'
 
 # Установка Apache 2.2
+# Установка Ruby 
+RUN echo "deb http://ru.archive.ubuntu.com/ubuntu/ precise main" >> /etc/apt/sources.list 
+RUN apt-get update && apt-get install -y --force-yes apache2=2.2.22-1ubuntu1 apache2-mpm-worker=2.2.22-1ubuntu1 apache2.2-common=2.2.22-1ubuntu1 apache2.2-bin=2.2.22-1ubuntu1 \
+     && ruby ruby-dev build-essential libxslt-dev libxml2-dev libxml2 zlib1g-dev
 
-RUN echo "deb http://ru.archive.ubuntu.com/ubuntu/ precise main" >> /etc/apt/sources.list
-RUN apt-get update && apt-get install -y --force-yes apache2=2.2.22-1ubuntu1 apache2-mpm-worker=2.2.22-1ubuntu1 apache2.2-common=2.2.22-1ubuntu1 apache2.2-bin=2.2.22-1ubuntu1
 
-# Установка Ruby
-
-RUN apt-get install -y --force-yes ruby ruby-dev build-essential libxslt-dev libxml2-dev libxml2 zlib1g-dev
-
-RUN gem install bundler --no-ri --no-rdoc
 ADD config /config
-RUN BUNDLE_GEMFILE=/config/Gemfile bundle install
+RUN gem install bundler --no-ri --no-rdoc \
+    && BUNDLE_GEMFILE=/config/Gemfile bundle install
 
 # Конфигурация веб-сервера
 
@@ -42,15 +38,15 @@ RUN chmod +x /etc/my_init.d/load_config.sh
 
 # Сервис веб-сервера
 
-RUN mkdir /etc/service/apache2
+RUN mkdir -p /etc/service/apache2 
 ADD service/apache.sh /etc/service/apache2/run
-RUN chmod +x /etc/service/apache2/run
 
 # Сервис редеплоя дескрипторов
 
 RUN mkdir /etc/service/config_reloader
 ADD service/config_reloader.sh /etc/service/config_reloader/run
-RUN chmod +x /etc/service/config_reloader/run
+
+RUN chmod +x /etc/service/config_reloader/run && chmod +x /etc/service/apache2/run
 
 CMD ["/sbin/my_init"]
 EXPOSE 80
