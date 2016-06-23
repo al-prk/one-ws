@@ -19,8 +19,7 @@ RUN sh -c 'dpkg -i ./packages/1c-enterprise*_amd64.deb'
 # Установка Apache 2.2
 # Установка Ruby 
 RUN echo "deb http://ru.archive.ubuntu.com/ubuntu/ precise main" >> /etc/apt/sources.list 
-RUN apt-get update && apt-get install -y --force-yes apache2=2.2.22-1ubuntu1 apache2-mpm-worker=2.2.22-1ubuntu1 apache2.2-common=2.2.22-1ubuntu1 apache2.2-bin=2.2.22-1ubuntu1 \
-     && ruby ruby-dev build-essential libxslt-dev libxml2-dev libxml2 zlib1g-dev
+RUN apt-get update && apt-get install -y --force-yes apache2=2.2.22-1ubuntu1 apache2-mpm-worker=2.2.22-1ubuntu1 apache2.2-common=2.2.22-1ubuntu1 apache2.2-bin=2.2.22-1ubuntu1 && ruby ruby-dev build-essential libxslt-dev libxml2-dev libxml2 zlib1g-dev
 
 
 ADD config /config
