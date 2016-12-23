@@ -1,0 +1,14 @@
+version: '2'
+services:
+  one-ws:
+    build: '.'
+    # volumes:
+    #   - ../v:/descriptors
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - one-ws
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
