@@ -19,6 +19,7 @@ def build_config
         dir_path = File.join(ENV['public_dir'], id)
         Dir.mkdir(dir_path) unless Dir.exists?(dir_path)
         f << template.result(binding)
+        puts xml.to_s
         puts "Descriptor \"#{id}\" from \"#{vrd_file}\" successfully deployed"
       else
         puts "Invalid descriptor in \"#{vrd_file}\""

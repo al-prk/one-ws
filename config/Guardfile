@@ -1,9 +1,0 @@
-$LOAD_PATH.unshift File.dirname(__FILE__)
-require 'build'
-
-guard(:shell) do
-  watch(/.*/) do
-    build_config
-    `/etc/init.d/apache2 reload`
-  end
-end
